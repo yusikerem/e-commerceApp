@@ -46,9 +46,11 @@ export default createStore({
       store;
       alert(payload.email, payload.password);
       const auth = getAuth();
-      signInWithEmailAndPassword(auth, payload.email, payload.password)
+      await signInWithEmailAndPassword(auth, payload.email, payload.password)
         .then((userCredential) => {
           console.log(userCredential.user);
+          localStorage.setItem("activeUser", payload.email);
+          localStorage.setItem("nickname", payload.nickname);
         })
         .catch((error) => {
           const errorCode = error.code;

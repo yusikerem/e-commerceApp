@@ -41,11 +41,15 @@ export default {
     let password = ref("");
 
     function login() {
-      store.dispatch("login", {
-        type: props.pageDetails.type,
-        email: email.value,
-        password: password.value,
-      });
+      if (email.value.trim() !== "" && password.value.trim() !== "") {
+        store.dispatch("login", {
+          type: props.pageDetails.type,
+          email: email.value,
+          password: password.value,
+        });
+      } else {
+        alert("Fill all the blanks");
+      }
     }
 
     return {

@@ -5,12 +5,16 @@ module.exports = {
     extend: {
       backgroundColor: {
         primaryGray: "#767676",
+        secondaryGray: "#4F4F4F",
       },
       textColor: {
         primaryGray: "#767676",
       },
       padding: {
         128: "512px",
+      },
+      borderColor: {
+        secondGray: "#4F4F4F",
       },
     },
   },

@@ -1,7 +1,8 @@
 <template>
-  <div class="p-4 flex border border-white w-80">
+  <div class="p-4 flex space-x-5 border border-white w-80">
     <img
-      class="mr-5 w-5 h-5"
+      v-if="imageOrder == 'left'"
+      class="w-5 h-5"
       :src="require(`../assets/${content.imgSrc}`)"
       alt=""
     />
@@ -9,8 +10,15 @@
       @keyup="$emit('inputValue', input)"
       :placeholder="content.placeholder.toUpperCase()"
       v-model="input"
-      class="bg-transparent placeholder:text-white tracking-wider outline-none"
+      class="bg-transparent placeholder:text-white tracking-wider outline-none w-full"
       :type="type"
+    />
+
+    <img
+      v-if="imageOrder == 'right'"
+      class="w-5 h-5"
+      :src="require(`../assets/${content.imgSrc}`)"
+      alt=""
     />
   </div>
 </template>
@@ -23,6 +31,9 @@ export default {
       default: "text",
     },
     content: {},
+    imageOrder: {
+      default: "left",
+    },
   },
   setup() {
     let input = ref("");
