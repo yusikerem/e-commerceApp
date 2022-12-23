@@ -4,6 +4,7 @@ import sellerLoginPage from "../views/sellerLoginPage.vue";
 import userRegisterPage from "../views/userRegisterPage.vue";
 import sellerRegisterPage from "../views/sellerRegisterPage.vue";
 import mainPage from "../views/mainPage.vue";
+import sellerAccountSettingsPage from "../views/sellerAccountSettingsPage.vue";
 const routes = [
   // {
   //   path: "/",
@@ -24,6 +25,11 @@ const routes = [
     path: "/sellerRegister",
     name: "sellerRegister",
     component: sellerRegisterPage,
+  },
+  {
+    path: "/sellerPage",
+    name: "sellerAccountSettingsPage",
+    component: sellerAccountSettingsPage,
   },
   {
     path: "/sellerLogin",

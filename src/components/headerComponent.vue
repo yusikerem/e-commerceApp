@@ -26,7 +26,7 @@
           </custom-input>
 
           <button class="px-4 py-2 bg-secondaryGray rounded-lg">
-            <a href="">
+            <router-link to="/sellerPage">
               <img
                 width="36"
                 height="36"
@@ -34,7 +34,7 @@
                 class=""
                 alt=""
               />
-            </a>
+            </router-link>
           </button>
           <button class="px-4 py-2 bg-secondaryGray rounded-lg">
             <a href="">

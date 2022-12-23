@@ -5,6 +5,7 @@ import {
   updateProfile,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import axios from "axios";
 
 export default createStore({
   state: {},
@@ -57,6 +58,16 @@ export default createStore({
           const errorMessage = error.message;
           alert(errorCode, errorMessage);
         });
+    },
+    addProduct({ store }, payload) {
+      store;
+      console.log(payload);
+      axios.post(
+        "https://e-commerceapp-facf9-default-rtdb.firebaseio.com/products.json",
+        {
+          payload,
+        }
+      );
     },
   },
   modules: {},

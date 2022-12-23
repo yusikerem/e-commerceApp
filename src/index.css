@@ -4,4 +4,7 @@
 .custom-container {
   @apply max-w-[1440px] container mx-auto;
 }
+.custom-header{
+@apply  md:text-3xl text-xl mb-2
+}
 @tailwind utilities;
