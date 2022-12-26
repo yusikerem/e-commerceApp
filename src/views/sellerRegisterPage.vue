@@ -4,7 +4,7 @@
   ></register-page-component>
 </template>
 <script>
-import registerPageComponent from "@/components/registerPageComponent.vue";
+import registerPageComponent from "@/components/RegisterPageComponent.vue";
 export default {
   components: { registerPageComponent },
 };

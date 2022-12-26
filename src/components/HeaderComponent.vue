@@ -1,30 +1,21 @@
 <template>
-  <header class="custom-container bg-[#F1F1F1] min-w-min">
+  <header class="custom-container bg-[#F1F1F1]">
     <div class="px-12 py-4 space-y-4">
-      <div class="space-x-28 hidden md:flex">
+      <div class="hidden md:flex justify-between">
         <button>
-          <a href="">
-            <img
-              width="140"
-              height="50"
-              src=""
-              class="bg-gray-200"
-              alt="logo"
-            />
-          </a>
+          <a class="text-4xl" href="/"> KEREMYOL </a>
         </button>
 
+        <custom-input
+          :content="{
+            imgSrc: 'Search.svg',
+            placeholder: 'Type to search...',
+          }"
+          imageOrder="right"
+          class="max:w-[800px] w-[40%] text-white border border-secondGray rounded-lg bg-secondaryGray"
+        >
+        </custom-input>
         <div class="flex space-x-5">
-          <custom-input
-            :content="{
-              imgSrc: 'Search.svg',
-              placeholder: 'Type to search...',
-            }"
-            imageOrder="right"
-            class="w-[800px] text-white border border-secondGray rounded-lg bg-secondaryGray"
-          >
-          </custom-input>
-
           <button class="px-4 py-2 bg-secondaryGray rounded-lg">
             <router-link to="/sellerPage">
               <img
@@ -157,7 +148,7 @@
 </template>
 
 <script>
-import customInput from "./customInput.vue";
+import customInput from "./CustomInput.vue";
 import { ref } from "vue";
 export default {
   components: { customInput },

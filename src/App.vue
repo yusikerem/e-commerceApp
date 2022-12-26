@@ -6,13 +6,16 @@
 
 <style></style>
 <script>
-import headerComponentVue from "@/components/headerComponent.vue";
-
+import headerComponentVue from "@/components/HeaderComponent.vue";
+import { onMounted } from "vue";
+import store from "./store";
 export default {
   components: { headerComponentVue },
   setup() {
     const activeUser = localStorage.getItem("activeUser");
-
+    onMounted(() => {
+      store.dispatch("fetchProducts");
+    });
     return {
       activeUser,
     };

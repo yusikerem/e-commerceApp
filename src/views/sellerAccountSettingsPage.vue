@@ -1,12 +1,39 @@
 <template>
   <section class="custom-container py-7 px-14">
-    {{ fileInput }}
     <h2 class="custom-header">Add a Product</h2>
-    <div class="flex gap-x-10">
-      <form class="w-[402px] h-[500px]" action="">
+    <div class="md:flex gap-x-10">
+      <form class="md:w-[402px] w-40 md:h-[500px]" action="">
+        <p class="block">Product Images</p>
+        <span v-if="imagesToUpload.length == 0">
+          You haven't uploaded any image yet.
+        </span>
+        <div
+          v-else
+          class="max-w-[400px] items-center mb-4 bg-gray-200 p-2 flex gap-x-3 gap-y-2 flex-wrap max-h-[168px] overflow-auto"
+        >
+          <div
+            class="w-20 h-20 bg-secondaryGray p-2 relative"
+            :key="i"
+            v-for="(img, i) in imagesToUpload"
+          >
+            <button
+              @click.prevent="removeImage(i)"
+              class="bg-red-500 w-4 h-4 rounded-full absolute top-0 right-0 flex items-center justify-center"
+            >
+              x
+            </button>
+            <img
+              @click="showOnPreview(i)"
+              class="w-full h-full"
+              :src="img.url"
+              alt=""
+            />
+          </div>
+        </div>
+
         <img
           id="preview"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png?20200912122019"
+          :src="previewImage"
           class="w-full h-full mb-4 bg-secondaryGray border rounded-xl p-2"
           alt=""
         />
@@ -14,10 +41,14 @@
           <input
             id="fileInput"
             accept="image/*"
-            v-on:change="test()"
+            v-on:change="handleInputChange"
             type="file"
+            hidden
           />
-          <button class="bg-secondaryGray text-white text-sm p-3 w-max">
+          <button
+            @click.prevent="uploadButton"
+            class="bg-secondaryGray text-white text-sm p-3 w-max"
+          >
             Upload the image
           </button>
         </div>
@@ -93,49 +124,145 @@
 <script>
 import { ref } from "vue";
 import store from "@/store";
+import { storage } from "@/firebase/index";
+import {
+  ref as stRef,
+  // uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage";
 export default {
   setup() {
+    const defaultImgUrl =
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png?20200912122019";
     let productName = ref("");
     let productCategory = ref("");
     let productDescription = ref("");
     let productPrice = ref("");
     let numberOfStocks = ref("");
     let isShipIncluded = ref(false);
+    // let uploadImageURL = {};
+    let imagesToUpload = ref([]);
+    let previewImage = ref(defaultImgUrl);
+    // let img;
     // let productImage = ref("");
-    function test() {
+    function handleInputChange(event) {
+      console.log(event.target.files[0]);
+      let filex = event.target.files[0];
+      console.log(filex);
+      // uploadImageURL = event.target.files[0];
+
+      // uploadBytes(storageRef, event.target.files[0]).then((snapshot) => {
+      //   const progress =
+      //     (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      //   console.log(progress);
+      //   console.log("uploaded");
+      // });
+
       const reader = new FileReader();
       let files = document.getElementById("fileInput").files;
       reader.onload = async (event) => {
-        console.log(event.target.result);
-        document
-          .getElementById("preview")
-          .setAttribute("src", event.target.result);
+        previewImage.value = event.target.result;
+        console.log(previewImage.value);
+        imagesToUpload.value.push({
+          url: previewImage.value,
+          file: filex,
+        });
+        console.log(imagesToUpload.value[0].file);
       };
       reader.readAsDataURL(files[0]);
     }
+
+    // function onUpload(){
+    //   img = null;
+    //   const storageRef=firebase.s
+    // }
+    function showOnPreview(i) {
+      previewImage.value = imagesToUpload.value[i].url;
+      console.log(imagesToUpload[i]);
+    }
+    function removeImage(i) {
+      console.log(imagesToUpload.value[i] + "," + previewImage.value);
+      if (imagesToUpload.value[i].url == previewImage.value) {
+        previewImage.value =
+          imagesToUpload.value[imagesToUpload.value.length - 1];
+        console.log(previewImage.value);
+
+        // if (
+        //   previewImage.value == defaultImgUrl &&
+        //   imagesToUpload.value.length > 0
+        // ) {
+        //   previewImage.value =
+        //     imagesToUpload.value[imagesToUpload.value.length - 1];
+        // }
+      }
+
+      imagesToUpload.value.splice(i, 1);
+      if (imagesToUpload.value.length == 0) {
+        previewImage.value = defaultImgUrl;
+      } else {
+        previewImage.value =
+          imagesToUpload.value[imagesToUpload.value.length - 1].url;
+      }
+      console.log(imagesToUpload);
+    }
+
     function addProduct() {
+      let filesToUpload = [];
+      imagesToUpload.value.forEach((img) => {
+        filesToUpload.push(img.file);
+      });
+      console.log(filesToUpload);
+
       if (
         productName.value.trim() !== "" &&
         productCategory.value.trim() !== "" &&
         productDescription.value.trim() !== "" &&
-        productPrice.value.trim() !== "" &&
-        numberOfStocks.value.trim() !== ""
+        productPrice.value !== "" &&
+        numberOfStocks.value !== ""
       ) {
-        store.dispatch("addProduct", {
-          productName: productName.value,
-          productCategory: productCategory.value,
-          productDescription: productDescription.value,
-          productPrice: productPrice.value,
-          numberOfStocks: numberOfStocks.value,
-          isShipIncluded: isShipIncluded.value,
-        });
+        store
+          .dispatch("addProduct", {
+            name: productName.value,
+            category: productCategory.value,
+            description: productDescription.value,
+            price: productPrice.value,
+            numberOfStocks: numberOfStocks.value,
+            isShipIncluded: isShipIncluded.value,
+          })
+          .then(() => {
+            let i = 1;
+            filesToUpload.forEach((f) => {
+              console.log(i);
+              const storageRef = stRef(
+                storage,
+                `products/${store.state.upLoadedItemId}/${i}`,
+                f
+              );
+              i++;
+              const uploadTask = uploadBytesResumable(storageRef, f);
+              uploadTask.on("state_changed", (snapshot) => {
+                // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                const progress =
+                  (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log("Upload is " + progress + "% done");
+              });
+            });
+          });
+        productName.value = "";
+        productCategory.value = "";
+        productDescription.value = "";
+        productPrice.value = "";
+        numberOfStocks.value = "";
+        isShipIncluded.value = false;
       } else {
         alert("Fill al the blanks");
       }
     }
+    function uploadButton() {
+      document.getElementById("fileInput").click();
+    }
 
     return {
-      test,
       productCategory,
       productDescription,
       productName,
@@ -143,6 +270,12 @@ export default {
       numberOfStocks,
       isShipIncluded,
       addProduct,
+      uploadButton,
+      handleInputChange,
+      imagesToUpload,
+      removeImage,
+      previewImage,
+      showOnPreview,
     };
   },
 };

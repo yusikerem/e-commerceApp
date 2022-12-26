@@ -4,7 +4,7 @@
   ></login-page-component>
 </template>
 <script>
-import loginPageComponent from "@/components/loginPageComponent.vue";
+import loginPageComponent from "@/components/LoginPageComponent.vue";
 export default {
   components: { loginPageComponent },
 };

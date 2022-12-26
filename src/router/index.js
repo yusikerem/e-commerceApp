@@ -17,12 +17,12 @@ const routes = [
     component: mainPage,
   },
   {
-    path: "/userLogin",
-    name: "userLogin",
+    path: "/user/login",
+    name: "user/Login",
     component: userLoginPage,
   },
   {
-    path: "/sellerRegister",
+    path: "/seller/register",
     name: "sellerRegister",
     component: sellerRegisterPage,
   },

@@ -1,10 +1,13 @@
 <template>
-  <header-component-vue></header-component-vue>
   <div>Main Page</div>
+
+  <products-component></products-component>
 </template>
 <script>
-import headerComponentVue from "@/components/headerComponent.vue";
+import productsComponent from "@/components/ProductsComponent.vue";
+
 export default {
-  components: { headerComponentVue },
+  components: { productsComponent },
+  setup() {},
 };
 </script>

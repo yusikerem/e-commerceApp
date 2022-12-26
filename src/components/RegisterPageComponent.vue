@@ -41,8 +41,8 @@
   </section>
 </template>
 <script>
-import inputComponent from "@/components/customInput.vue";
-import buttonComponent from "@/components/customButton.vue";
+import inputComponent from "@/components/CustomInput.vue";
+import buttonComponent from "@/components/CustomButton.vue";
 import store from "@/store";
 import { ref } from "vue";
 
