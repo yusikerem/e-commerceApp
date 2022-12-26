@@ -24,7 +24,8 @@
         :key="i"
         :name="product.name"
         :price="product.price"
-        :url="product.imgUrl"
+        :url="product.imgUrls"
+        :cover="product.coverPhoto"
       >
       </product-component>
     </div>

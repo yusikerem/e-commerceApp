@@ -13,12 +13,11 @@
         <img
           width="219"
           height="330"
-          :src="url"
+          :src="url[cover]"
           alt=""
           class="group-hover:scale-110 z-[-10] relative"
         />
       </div>
-
       <div>
         <h6 class="font-medium">{{ name }}</h6>
         <div class="flex space-x-1 items-center">
@@ -48,6 +47,10 @@ export default {
     url: {
       type: String,
       default: "",
+    },
+    cover: {
+      type: Number,
+      default: 0,
     },
   },
 };

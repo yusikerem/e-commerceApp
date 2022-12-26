@@ -5,7 +5,7 @@ import {
   updateProfile,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { ref as stRef, getDownloadURL } from "firebase/storage";
+import { ref as stRef, getDownloadURL, listAll } from "firebase/storage";
 import { collection, onSnapshot, addDoc } from "firebase/firestore";
 import { db } from "@/firebase/index";
 import { storage } from "@/firebase/index";
@@ -90,6 +90,7 @@ export default createStore({
         price: payload.price,
         numberOfStocks: payload.numberOfStocks,
         isShipIncluded: payload.isShipIncluded,
+        coverPhoto: payload.coverPhoto,
       }).then((resp) => {
         payload.id = resp.id;
         const id = resp.id;
@@ -122,9 +123,10 @@ export default createStore({
           const pdt = doc.data();
           pdt.id = doc.id;
           this.dispatch("fetchProductImg", doc.id).then((url) => {
-            pdt.imgUrl = url;
+            pdt.imgUrls = url;
           });
           state.products.push(pdt);
+          console.log(state.products);
         });
       });
 
@@ -153,15 +155,30 @@ export default createStore({
       //   });
     },
     async fetchProductImg({ state }, payload) {
+      let imgUrls = [];
+      await listAll(stRef(storage, `products/${payload}`)).then((res) => {
+        // res.prefixes.forEach((folderRef) => {
+        //   console.log(folderRef);
+        // });
+
+        res.items.forEach((itemRef) => {
+          getDownloadURL(stRef(storage, itemRef._location.path_)).then(
+            (url) => {
+              imgUrls.push(url);
+            }
+          );
+        });
+      });
+
       state;
-      let imgUrl = "";
-      await getDownloadURL(stRef(storage, `products/${payload}/`)).then(
-        (url) => {
-          console.log(url);
-          imgUrl = url;
-        }
-      );
-      return imgUrl;
+
+      // await getDownloadURL(stRef(storage, `products/${payload}/`)).then(
+      //   (url) => {
+      //     console.log(url);
+      //     imgUrl = url;
+      //   }
+      // );
+      return imgUrls;
     },
   },
   modules: {},

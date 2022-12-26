@@ -12,22 +12,31 @@
           class="max-w-[400px] items-center mb-4 bg-gray-200 p-2 flex gap-x-3 gap-y-2 flex-wrap max-h-[168px] overflow-auto"
         >
           <div
-            class="w-20 h-20 bg-secondaryGray p-2 relative"
+            class="w-20 h-20 bg-secondaryGray p-2 relative z-10"
             :key="i"
             v-for="(img, i) in imagesToUpload"
+            :class="{ 'border border-red-400': img.cover == true }"
           >
+            <div
+              v-if="img.cover"
+              class="absolute top-[-12px] left-0 text-center text-xs text-red-500 p-2 w-full h-min"
+            >
+              Cover
+            </div>
             <button
               @click.prevent="removeImage(i)"
               class="bg-red-500 w-4 h-4 rounded-full absolute top-0 right-0 flex items-center justify-center"
             >
               x
             </button>
-            <img
-              @click="showOnPreview(i)"
-              class="w-full h-full"
-              :src="img.url"
-              alt=""
-            />
+            <div class="relative">
+              <img
+                @click="showOnPreview(i)"
+                class="w-full h-full"
+                :src="img.url"
+                alt=""
+              />
+            </div>
           </div>
         </div>
 
@@ -140,6 +149,7 @@ export default {
     let productPrice = ref("");
     let numberOfStocks = ref("");
     let isShipIncluded = ref(false);
+    let coverPhoto = ref(0);
     // let uploadImageURL = {};
     let imagesToUpload = ref([]);
     let previewImage = ref(defaultImgUrl);
@@ -164,12 +174,19 @@ export default {
         previewImage.value = event.target.result;
         console.log(previewImage.value);
         imagesToUpload.value.push({
+          cover: coverFnc(),
           url: previewImage.value,
           file: filex,
         });
-        console.log(imagesToUpload.value[0].file);
+        console.log(imagesToUpload.value);
       };
       reader.readAsDataURL(files[0]);
+    }
+
+    //for make always first photo cover photo
+    function coverFnc() {
+      if (imagesToUpload.value.length == 0) return true;
+      else false;
     }
 
     // function onUpload(){
@@ -177,8 +194,16 @@ export default {
     //   const storageRef=firebase.s
     // }
     function showOnPreview(i) {
+      //set to default all images cover value.
+      imagesToUpload.value.forEach((i) => {
+        i.cover = false;
+      });
+      //set cover image.
+      coverPhoto.value = i;
+      console.log(coverPhoto.value);
+      console.log(imagesToUpload.value);
+      imagesToUpload.value[i].cover = true;
       previewImage.value = imagesToUpload.value[i].url;
-      console.log(imagesToUpload[i]);
     }
     function removeImage(i) {
       console.log(imagesToUpload.value[i] + "," + previewImage.value);
@@ -228,6 +253,7 @@ export default {
             price: productPrice.value,
             numberOfStocks: numberOfStocks.value,
             isShipIncluded: isShipIncluded.value,
+            coverPhoto: coverPhoto.value,
           })
           .then(() => {
             let i = 1;
