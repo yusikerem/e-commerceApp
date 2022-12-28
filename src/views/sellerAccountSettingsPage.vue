@@ -1,10 +1,10 @@
 <template>
-  <section class="custom-container py-7 px-14">
+  <section class="custom-container py-7 px-2 lg:px-14">
     <h2 class="custom-header">Add a Product</h2>
     <div class="md:flex gap-x-10">
-      <form class="md:w-[402px] w-40 md:h-[500px]" action="">
-        <p class="block">Product Images</p>
-        <span v-if="imagesToUpload.length == 0">
+      <form class="md:w-[402px] w-40 md:h-[500px] mb-4 lg:mb-0" action="">
+        <p class="block mb-2">Product Images</p>
+        <span class="opacity-50 text-xs" v-if="imagesToUpload.length == 0">
           You haven't uploaded any image yet.
         </span>
         <div
@@ -68,7 +68,7 @@
           <input
             v-model="productName"
             type="text"
-            class="p-3 w-96 bg-gray-200 rounded-md"
+            class="p-3 lg:w-96 bg-gray-200 rounded-md"
           />
         </div>
         <div class="space-y-2">
@@ -79,24 +79,24 @@
             <option value="garden">Garden</option>
           </select>
         </div>
-        <div class="space-y-2">
+        <div class="space-y-2 relative">
           <h4>Description:</h4>
           <textarea
             v-model="productDescription"
-            class="p-3 bg-gray-200 rounded-md resize-none"
+            class="p-3 bg-gray-200 rounded-md resize-none max-w-full"
             name=""
             id=""
             cols="35"
             rows="10"
           ></textarea>
         </div>
-        <div class="flex justify-between">
+        <div class="flex justify-between relative">
           <div class="flex flex-col space-y-2">
             <h4>Price:</h4>
             <input
               v-model="productPrice"
               type="number"
-              class="p-3 w-44 bg-gray-200 rounded-md mb-2"
+              class="p-3 w-[70%] lg:w-44 bg-gray-200 rounded-md mb-2"
             />
             <div class="flex items-center">
               <input
@@ -115,7 +115,7 @@
             <input
               v-model="numberOfStocks"
               type="number"
-              class="p-3 w-44 bg-gray-200 rounded-md"
+              class="p-3 w-[70%] lg:w-44 bg-gray-200 rounded-md"
             />
           </div>
         </div>
@@ -254,6 +254,8 @@ export default {
             numberOfStocks: numberOfStocks.value,
             isShipIncluded: isShipIncluded.value,
             coverPhoto: coverPhoto.value,
+            owner: localStorage.getItem("activeUser"),
+            comments: [],
           })
           .then(() => {
             let i = 1;

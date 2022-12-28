@@ -6,15 +6,23 @@
           <a class="text-4xl" href="/"> KEREMYOL </a>
         </button>
 
-        <custom-input
-          :content="{
-            imgSrc: 'Search.svg',
-            placeholder: 'Type to search...',
-          }"
-          imageOrder="right"
-          class="max:w-[800px] w-[40%] text-white border border-secondGray rounded-lg bg-secondaryGray"
-        >
-        </custom-input>
+        <div class="max-w-[320px] w-[40%]">
+          <custom-input
+            :content="{
+              imgSrc: 'Search.svg',
+              placeholder: 'Type to search...',
+            }"
+            imageOrder="right"
+            class="text-white border border-secondGray rounded-lg bg-secondaryGray"
+          >
+          </custom-input>
+          <ul class="absolute p-4 bg-gray-300 max-w-[320px] w-[40%]">
+            <li class="border-b w-full">saasdsadsa</li>
+            <li class="border-b">sa</li>
+            <li class="border-b">sa</li>
+            <li class="border-b">sa</li>
+          </ul>
+        </div>
         <div class="flex space-x-5">
           <button class="px-4 py-2 bg-secondaryGray rounded-lg">
             <router-link to="/sellerPage">
